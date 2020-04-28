@@ -3,7 +3,7 @@
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
-<html lang="ar" dir="rtl">
+<html lang="{{ App::getLocale() }}" dir="@if(App::getLocale() == 'en') {{ 'ltr' }} @else {{ 'rtl' }} @endif">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,16 +23,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
   <!-- JQVMap -->
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/jqvmap/jqvmap.min.css') }}">
+@if(App::getLocale() == 'ar')
   <!-- Theme style -->
 <link rel="stylesheet" href="{{ asset('dashboard/dist/css/adminlte.min.css') }}">
   <!-- overlayScrollbars -->
+@endif
+
+@if(App::getLocale() == 'en')
+<link rel="stylesheet" href="{{ asset('dashboard/dist/css/adminlte-ltr.min.css') }}">
+{{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  @endif
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
   <!-- Daterange picker -->
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/daterangepicker/daterangepicker.css') }}">
   <!-- summernote -->
 <link rel="stylesheet" href="{{ asset('dashboard/plugins/summernote/summernote-bs4.css') }}">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
 
   @if(App::getLocale() == 'ar')
   <!-- Bootstrap 4 RTL -->
@@ -45,13 +53,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         font-family: 'Tajawal', sans-serif;
       }
   </style>
+  <link rel="stylesheet" href="{{ asset('dashboard/dist/css/custom.css') }}">
   @endif
-
-  @if(App::getLocale() == 'en')
-
-  @endif
-
-<link rel="stylesheet" href="{{ asset('dashboard/dist/css/custom.css') }}">
 
 
 </head>
@@ -170,6 +173,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+        </div>
+      </li>
+      <!-- Notifications Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          اللغة
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+
+                    <a rel="alternate" class="dropdown-item" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                        {{ $properties['native'] }}
+                    </a>
+
+            @endforeach
         </div>
       </li>
     </ul>
